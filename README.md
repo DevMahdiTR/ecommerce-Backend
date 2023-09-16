@@ -1,4 +1,5 @@
-This is a sample e-commerce backend application built with Spring Boot. It provides the core functionality needed to support an e-commerce platform, including user authentication, product management, order processing, and more.
+# ecommerce-Backend
+🛒 E-Commerce Backend: Built with Spring Boot, this secure and optimized e-commerce backend ensures top-notch performance, robust security, and scalability. Features microservices architecture, real-time analytics, and compliance with industry standards. Perfect for your online retail business. 💼💳 #SpringBoot #ECommerce #Security #Optimization"
 
 ## Table of Contents
 
