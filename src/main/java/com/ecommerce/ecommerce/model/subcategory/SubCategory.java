@@ -1,11 +1,15 @@
 package com.ecommerce.ecommerce.model.subcategory;
 
+import com.ecommerce.ecommerce.model.article.Article;
 import com.ecommerce.ecommerce.model.category.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,4 +35,8 @@ public class SubCategory {
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category_id")
     private Category category;
+
+
+    @OneToMany(mappedBy = "subCategory" , cascade = CascadeType.ALL)
+    private List<Article> articles = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.model.file;
 
+import com.ecommerce.ecommerce.model.article.Article;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,8 @@ public class FileData {
     private String type;
     @Column(name ="file_path")
     private String filePath;
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "article_id")
+    private Article article;
 }

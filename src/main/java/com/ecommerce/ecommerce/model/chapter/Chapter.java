@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.model.chapter;
 
+import com.ecommerce.ecommerce.model.article.Article;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class Chapter {
     @Size(min = 2 , max = 999 , message = "The description should be between 2 and 999 character per chapter.")
     private String description;
 
-    //to do relation with article
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "article_id")
+    private Article article;
 
 }

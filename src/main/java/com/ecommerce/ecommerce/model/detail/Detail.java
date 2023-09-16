@@ -1,6 +1,7 @@
 package com.ecommerce.ecommerce.model.detail;
 
 
+import com.ecommerce.ecommerce.model.article.Article;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,7 @@ public class Detail {
     private String description;
 
 
-    //to do relation with article
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "article_id")
+    private Article article;
 }
