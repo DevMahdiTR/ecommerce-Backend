@@ -28,15 +28,18 @@ Before you begin, ensure you have met the following requirements:
    
 2.Navigate to the project directory:
 
-  cd e-commerce-backend
+    ```bash
+    cd e-commerce-backend ```bash
 
 3.Build the project using Maven:
 
-  mvn clean install
+    ```bash
+     mvn clean install
   
 4.Run the application:
 
-  java -jar target/e-commerce-backend-1.0.0.jar
+    ```bash
+     java -jar target/e-commerce-backend-1.0.0.jar
   
 The application should now be running locally at http://localhost:8080.
 
