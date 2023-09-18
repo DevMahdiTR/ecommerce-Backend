@@ -4,8 +4,13 @@ import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTOMapper;
 import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.SubCategoryRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
+
+@Service
 public class SubCategoryServiceImpl implements  SubCategoryService{
 
     final SubCategoryRepository subCategoryRepository;
@@ -28,5 +33,12 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     public void deleteSubCategoryById(long subCategoryId) {
         final SubCategory subCategory = getSubCategoryById(subCategoryId);
         subCategoryRepository.deleteSubCategoriesById(subCategoryId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteSubCategoryAll(List<SubCategory> subCategories)
+    {
+        subCategoryRepository.deleteSubCategoriesByIds(subCategories);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,14 +16,19 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface SubCategoryRepository extends JpaRepository<SubCategory , Integer> {
 
-    @Query(value = "select sc from SubCategory sc where sc.id = :subCategoryId")
+    @Query(value = "select s from SubCategory s where s.id = :subCategoryId")
     Optional<SubCategory> fetchSubCategoryById(@Param("subCategoryId") final long subCategoryId);
 
 
 
     @Transactional
     @Modifying
-    @Query("delete from SubCategory sc where sc.id = :subCategoryId")
+    @Query("delete from SubCategory s where s.id = :subCategoryId")
     void deleteSubCategoriesById(@Param("subCategoryId")final long subCategoryId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM SubCategory s WHERE s IN :subCategories")
+    void deleteSubCategoriesByIds(List<SubCategory> subCategories);
 
 }

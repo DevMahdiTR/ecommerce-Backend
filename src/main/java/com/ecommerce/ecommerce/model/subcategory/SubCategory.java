@@ -28,11 +28,11 @@ public class SubCategory {
     private long id;
 
 
-    @Column(name = "title", nullable = false,unique = true)
+    @Column(name = "title",unique = true)
     @Size(min = 2 , max = 30 ,message = "The category title should be between 2 and 30 characters long.")
     private String title;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
