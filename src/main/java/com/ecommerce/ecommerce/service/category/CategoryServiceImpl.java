@@ -53,13 +53,11 @@ public class CategoryServiceImpl implements CategoryService{
         final Category currentCategory = getCategoryById(categoryId);
         final List<SubCategory> subCategories = currentCategory.getSubCategories();
 
-        System.out.println("Number of subcategories before deletion: " + subCategories.size());
 
         if (subCategories.size() > 0) {
             subCategoryService.deleteSubCategoryAll(currentCategory.getSubCategories());
         }
 
-        System.out.println("Number of subcategories after deletion: " + subCategories.size());
         categoryRepository.deleteCategoriesById(categoryId);
 
         final String successResponse = String.format("The Category with ID : %d deleted successfully.",categoryId);
@@ -69,8 +67,6 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CustomResponseEntity<CategoryDTO> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory) {
         final Category currentCategory =  getCategoryById(categoryId);
-
-
 
         subCategory.setCategory(currentCategory);
         currentCategory.getSubCategories().add(subCategory);

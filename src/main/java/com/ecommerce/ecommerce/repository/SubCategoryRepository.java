@@ -21,14 +21,17 @@ public interface SubCategoryRepository extends JpaRepository<SubCategory , Integ
 
 
 
+    @Query(value = "select s from SubCategory s")
+    List<SubCategory> fetchAllSubCategories();
+
     @Transactional
     @Modifying
     @Query("delete from SubCategory s where s.id = :subCategoryId")
-    void deleteSubCategoriesById(@Param("subCategoryId")final long subCategoryId);
+    void deleteSubCategorieById(@Param("subCategoryId")final long subCategoryId);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM SubCategory s WHERE s IN :subCategories")
-    void deleteSubCategoriesByIds(List<SubCategory> subCategories);
+    void deleteAllSubCategories(@Param("subCategories") List<SubCategory> subCategories);
 
 }
