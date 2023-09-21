@@ -7,6 +7,6 @@ import java.util.List;
 public interface ArticleService {
 
 
-
+    public Article save(final Article article);
     public void deleteAllArticles (final List<Article> articles);
 }

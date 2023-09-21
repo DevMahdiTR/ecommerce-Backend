@@ -53,7 +53,6 @@ public class CategoryServiceImpl implements CategoryService{
         final Category currentCategory = getCategoryById(categoryId);
         final List<SubCategory> subCategories = currentCategory.getSubCategories();
 
-
         if (subCategories.size() > 0) {
             subCategoryService.deleteSubCategoryAll(currentCategory.getSubCategories());
         }

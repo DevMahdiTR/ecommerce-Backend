@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/categories/**").permitAll()
+                .requestMatchers("/api/v1/subcategories/**").permitAll()
 
                 .anyRequest().authenticated()
                 .and()

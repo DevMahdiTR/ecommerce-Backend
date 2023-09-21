@@ -46,7 +46,7 @@ public class FileServiceImpl implements  FileService{
     private final String  FILE_SYSTEM_PATH= Paths.get("").toAbsolutePath().resolve("src").resolve("main").resolve("resources").resolve("FileSystem").toString() + "/";
 
     @Override
-    public FileData processUploadedFile(@NotNull final MultipartFile file) throws IOException, IOException {
+    public FileData processUploadedFile(@NotNull final MultipartFile file) throws IOException {
         var originalFileName = file.getOriginalFilename();
         var fileName = originalFileName.substring(0, originalFileName.indexOf('.'));
         var extension = originalFileName.substring(originalFileName.indexOf('.'));
@@ -59,7 +59,6 @@ public class FileServiceImpl implements  FileService{
                 .build();
 
         file.transferTo(new File(filePath));
-        fileDataRepository.save(fileData);
         return fileData;
     }
     public ResponseEntity<byte[]> downloadFile(@NotNull final  FileData fileData) throws IOException {

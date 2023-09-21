@@ -6,15 +6,21 @@ import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTOMapper;
 import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.ecommerce.model.article.Article;
+import com.ecommerce.ecommerce.model.file.FileData;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.SubCategoryRepository;
 import com.ecommerce.ecommerce.service.article.ArticleService;
+import com.ecommerce.ecommerce.service.file.FileService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,19 +30,14 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     private final SubCategoryDTOMapper subCategoryDTOMapper;
     private final ArticleService articleService;
     private final ArticleDTOMapper articleDTOMapper;
+    private final FileService fileService;
 
-    public SubCategoryServiceImpl(SubCategoryRepository subCategoryRepository, SubCategoryDTOMapper subCategoryDTOMapper, ArticleService articleService, ArticleDTOMapper articleDTOMapper) {
+    public SubCategoryServiceImpl(SubCategoryRepository subCategoryRepository, SubCategoryDTOMapper subCategoryDTOMapper, ArticleService articleService, ArticleDTOMapper articleDTOMapper, FileService fileService) {
         this.subCategoryRepository = subCategoryRepository;
         this.subCategoryDTOMapper = subCategoryDTOMapper;
         this.articleService = articleService;
         this.articleDTOMapper = articleDTOMapper;
-    }
-
-    @Override
-    public CustomResponseEntity<SubCategoryDTO> createSubCategory(@NotNull SubCategory subCategory) {
-        final SubCategory currentSubCategory = subCategoryRepository.save(subCategory);
-        final SubCategoryDTO subCategoryDTO = subCategoryDTOMapper.apply(currentSubCategory);
-        return new CustomResponseEntity<>(HttpStatus.OK , subCategoryDTO);
+        this.fileService = fileService;
     }
 
     @Override
@@ -68,6 +69,13 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     }
 
     @Override
+    public CustomResponseEntity<SubCategoryDTO> fetchSubCategoryById(long subCategoryId) {
+        final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
+        final SubCategoryDTO subCategory = subCategoryDTOMapper.apply(currentSubCategory);
+        return new CustomResponseEntity<>(HttpStatus.OK , subCategory);
+    }
+
+    @Override
     public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategory() {
         final List<SubCategory> currentSubCategories = subCategoryRepository.fetchAllSubCategories();
         final List<SubCategoryDTO> subCategories = currentSubCategories.stream().map(subCategoryDTOMapper).toList();
@@ -85,13 +93,45 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     }
 
     @Override
+    public CustomResponseEntity<ArticleDTO> addArticleToSubCategoryById(long subCategoryId, @NotNull List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
+        if(multipartFiles.size() >= 5)
+        {
+            throw  new IllegalStateException("You exceeded the images limits  (max : 5) .");
+        }
+
+
+        final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
+        final Article article = new ObjectMapper().readValue(articleJson , Article.class);
+
+        for(var chapter : article.getChapters())
+        {
+            chapter.setArticle(article);
+        }
+        for(var detail : article.getDetails())
+        {
+            detail.setArticle(article);
+        }
+        article.setSubCategory(currentSubCategory);
+
+        final List<FileData> images  = new ArrayList<>();
+        for (MultipartFile multipartFile : multipartFiles) {
+            FileData image = fileService.processUploadedFile(multipartFile);
+            image.setArticle(article);
+            images.add(image);
+        }
+        article.setFiles(images);
+        articleService.save(article);
+
+        final ArticleDTO articleDTO = articleDTOMapper.apply(article);
+        return new CustomResponseEntity<>(HttpStatus.OK , articleDTO);
+    }
+
+    @Override
     public SubCategory getSubCategoryById(final long subCategoryId) {
         return subCategoryRepository.fetchSubCategoryById(subCategoryId).orElseThrow(
                 () -> new ResourceNotFoundException(String.format("The Sub Category with ID : %d could not be found in our system.", subCategoryId))
         );
     }
-
-
 
     @Transactional
     @Override
