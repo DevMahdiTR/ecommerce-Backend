@@ -16,7 +16,7 @@ public interface CategoryService {
     CustomResponseEntity<CategoryDTO> createCategory(@NotNull final Category category);
     CustomResponseEntity<String> updateCategory(final long categoryId , @NotNull final Category category);
     CustomResponseEntity<String> deleteCategoryById(final long categoryId);
-    CustomResponseEntity<CategoryDTO> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory);
+    CustomResponseEntity<String> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory);
     public CustomResponseEntity<CategoryDTO> removeSubCategory(final long categoryId, final long subCategoryId) ;
     CustomResponseEntity<CategoryDTO> fetchCategoryById(final long categoryId);
     CustomResponseEntity<List<CategoryDTO>> fetchAllCategories();

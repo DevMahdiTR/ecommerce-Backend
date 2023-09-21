@@ -62,14 +62,14 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public CustomResponseEntity<CategoryDTO> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory) {
+    public CustomResponseEntity<String> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory) {
         final Category currentCategory =  getCategoryById(categoryId);
 
         subCategory.setCategory(currentCategory);
         currentCategory.getSubCategories().add(subCategory);
         categoryRepository.save(currentCategory);
-        final CategoryDTO category = categoryDTOMapper.apply(currentCategory);
-        return new CustomResponseEntity<>(HttpStatus.OK , category);
+        final String successResponse = String.format("The Sub category with TITLE : %s added successfully",subCategory.getTitle());
+        return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
     }
 
     @Override

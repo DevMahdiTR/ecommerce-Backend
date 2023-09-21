@@ -31,6 +31,8 @@ public class Article {
     private long id;
 
 
+    @Column(name = "title" , nullable = false)
+    private String title;
 
     @Column(name = "price", nullable = false)
     private float price;

@@ -18,7 +18,7 @@ public interface SubCategoryService {
     public CustomResponseEntity<SubCategoryDTO> fetchSubCategoryById(final long subCategoryId);
     public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategory();
     public CustomResponseEntity<List<ArticleDTO>> fetchArticleFromSubCategory(final long subCategoryId);
-    public CustomResponseEntity<ArticleDTO> addArticleToSubCategoryById(
+    public CustomResponseEntity<String> addArticleToSubCategoryById(
             long subCategoryId ,
             final @NotNull List<MultipartFile> multipartFiles,
             @NotNull final String articleJson

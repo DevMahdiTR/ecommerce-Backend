@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.DocFlavor;
 import java.util.List;
 
 @RestController
@@ -37,7 +38,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}/subcategories")
-    public CustomResponseEntity<CategoryDTO> addSubCategory(@PathVariable("categoryId") final long categoryId , @NotNull @Valid @RequestBody final SubCategory subCategory)
+    public CustomResponseEntity<String> addSubCategory(@PathVariable("categoryId") final long categoryId , @NotNull @Valid @RequestBody final SubCategory subCategory)
     {
         return categoryService.addSubCategory(categoryId , subCategory);
     }

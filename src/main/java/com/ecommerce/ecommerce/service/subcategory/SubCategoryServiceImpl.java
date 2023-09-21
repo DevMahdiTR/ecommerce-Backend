@@ -92,7 +92,7 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     }
 
     @Override
-    public CustomResponseEntity<ArticleDTO> addArticleToSubCategoryById(long subCategoryId, @NotNull List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
+    public CustomResponseEntity<String> addArticleToSubCategoryById(long subCategoryId, @NotNull List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
         if(multipartFiles.size() >= 5)
         {
             throw  new IllegalStateException("You exceeded the images limits  (max : 5) .");
@@ -121,8 +121,8 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
         article.setFiles(images);
         articleService.save(article);
 
-        final ArticleDTO articleDTO = articleService.mapToDTOItem(article);
-        return new CustomResponseEntity<>(HttpStatus.OK , articleDTO);
+        final String successResponse = String.format("The Article with TITLE : %s added successfully",article.getTitle());
+        return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
     }
 
     @Override

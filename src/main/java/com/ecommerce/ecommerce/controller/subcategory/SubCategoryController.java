@@ -56,7 +56,7 @@ public class SubCategoryController {
     }
 
     @PutMapping("/{subcategoryId}/articles")
-    public CustomResponseEntity<ArticleDTO> addArticleToSubCategory(
+    public CustomResponseEntity<String> addArticleToSubCategory(
             @PathVariable("subcategoryId") final long subcategoryId,
             @RequestParam("images") List<MultipartFile> multipartFiles,
             @RequestParam(value = "articleJson" , required = true) final String articleJson
