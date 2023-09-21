@@ -14,6 +14,7 @@ public class ArticleDTOMapper implements Function<Article ,ArticleDTO> {
     public ArticleDTO apply(Article article) {
         return new ArticleDTO(
                 article.getId(),
+                article.getTitle(),
                 article.getPrice(),
                 article.getQuantity(),
                 article.getLayoutDescription(),

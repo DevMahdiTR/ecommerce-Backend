@@ -7,6 +7,7 @@ import java.util.List;
 
 public record  ArticleDTO (
         long id,
+        String title,
         float price,
         long quantity,
         String layoutDescription,
