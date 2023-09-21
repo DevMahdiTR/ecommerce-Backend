@@ -22,12 +22,10 @@ public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
     private final CategoryDTOMapper categoryDTOMapper;
-    private final SubCategoryDTOMapper subCategoryDTOMapper ;
     private final SubCategoryService subCategoryService;
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper, SubCategoryDTOMapper subCategoryDTOMapper, SubCategoryService subCategoryService) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService) {
         this.categoryRepository = categoryRepository;
         this.categoryDTOMapper = categoryDTOMapper;
-        this.subCategoryDTOMapper = subCategoryDTOMapper;
         this.subCategoryService = subCategoryService;
     }
 
@@ -111,7 +109,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategoryInCategoryById(final long categoryId) {
         final Category currentCategory = getCategoryById(categoryId);
-        final List<SubCategoryDTO> subCategories = currentCategory.getSubCategories().stream().map(subCategoryDTOMapper).toList();
+        final List<SubCategoryDTO> subCategories = subCategoryService.mapToDTOList(currentCategory.getSubCategories());
         return new CustomResponseEntity<>(HttpStatus.OK , subCategories);
     }
 

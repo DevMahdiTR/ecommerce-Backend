@@ -1,7 +1,6 @@
 package com.ecommerce.ecommerce.service.subcategory;
 
 import com.ecommerce.ecommerce.dto.article.ArticleDTO;
-import com.ecommerce.ecommerce.dto.article.ArticleDTOMapper;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTOMapper;
 import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
@@ -29,14 +28,14 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     private final SubCategoryRepository subCategoryRepository;
     private final SubCategoryDTOMapper subCategoryDTOMapper;
     private final ArticleService articleService;
-    private final ArticleDTOMapper articleDTOMapper;
+
     private final FileService fileService;
 
-    public SubCategoryServiceImpl(SubCategoryRepository subCategoryRepository, SubCategoryDTOMapper subCategoryDTOMapper, ArticleService articleService, ArticleDTOMapper articleDTOMapper, FileService fileService) {
+    public SubCategoryServiceImpl(SubCategoryRepository subCategoryRepository, SubCategoryDTOMapper subCategoryDTOMapper, ArticleService articleService , FileService fileService) {
         this.subCategoryRepository = subCategoryRepository;
         this.subCategoryDTOMapper = subCategoryDTOMapper;
         this.articleService = articleService;
-        this.articleDTOMapper = articleDTOMapper;
+
         this.fileService = fileService;
     }
 
@@ -87,7 +86,7 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     public CustomResponseEntity<List<ArticleDTO>> fetchArticleFromSubCategory(long subCategoryId) {
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
         final List<Article> currentArticles = currentSubCategory.getArticles();
-        final List<ArticleDTO> articles = currentArticles.stream().map(articleDTOMapper).toList();
+        final List<ArticleDTO> articles = articleService.mapToDTOList(currentArticles);
 
         return new CustomResponseEntity<>(HttpStatus.OK , articles);
     }
@@ -122,8 +121,18 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
         article.setFiles(images);
         articleService.save(article);
 
-        final ArticleDTO articleDTO = articleDTOMapper.apply(article);
+        final ArticleDTO articleDTO = articleService.mapToDTOItem(article);
         return new CustomResponseEntity<>(HttpStatus.OK , articleDTO);
+    }
+
+    @Override
+    public SubCategoryDTO mapToDTOItem(SubCategory subCategory) {
+        return subCategoryDTOMapper.apply(subCategory);
+    }
+
+    @Override
+    public List<SubCategoryDTO> mapToDTOList(List<SubCategory> subCategories) {
+        return subCategories.stream().map(subCategoryDTOMapper).toList();
     }
 
     @Override

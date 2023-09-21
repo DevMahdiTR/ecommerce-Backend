@@ -25,6 +25,10 @@ public interface SubCategoryService {
     ) throws IOException;
 
 
+
+
+    public SubCategoryDTO mapToDTOItem(final SubCategory subCategory);
+    public List<SubCategoryDTO> mapToDTOList(final List<SubCategory> subCategories);
     public SubCategory getSubCategoryById(final long subCategoryId);
     public void deleteSubCategoryById(final long subCategoryId);
     public void deleteSubCategoryAll(List<SubCategory> subCategories);
