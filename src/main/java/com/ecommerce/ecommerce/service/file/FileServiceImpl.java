@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -61,6 +62,8 @@ public class FileServiceImpl implements  FileService{
         file.transferTo(new File(filePath));
         return fileData;
     }
+
+    @Override
     public ResponseEntity<byte[]> downloadFile(@NotNull final  FileData fileData) throws IOException {
         final String filePath = fileData.getFilePath();
         byte[] file = Files.readAllBytes(new File(filePath).toPath());
@@ -72,6 +75,8 @@ public class FileServiceImpl implements  FileService{
         return new ResponseEntity<>(file, headers, HttpStatus.OK);
     }
 
+
+    @Override
     @Transactional
     public void deleteFileFromFileSystem(@NotNull final FileData fileData) throws IOException {
         File fileToDelete = new File(fileData.getFilePath());
@@ -82,6 +87,19 @@ public class FileServiceImpl implements  FileService{
         fileDataRepository.deleteFileDataById(fileData.getId());
     }
 
+    @Override
+    @Transactional
+    public void deleteAllFiles(@NotNull final List<FileData> files) throws IOException {
+        for(var file : files)
+        {
+            File fileToDelete = new File(file.getFilePath());
+            if(!fileToDelete.delete())
+            {
+                throw new IOException(String.format("Failed to delete file with file path : %s",file.getFilePath()));
+            }
+        }
+        fileDataRepository.deleteAllFiles(files);
+    }
     public String determineContentType(@NotNull String filePath) {
 
         String extension = filePath.substring(filePath.lastIndexOf(".") + 1).toLowerCase();

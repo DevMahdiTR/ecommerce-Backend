@@ -47,7 +47,6 @@ public class Article {
     @Column(name = "reference" , nullable = false)
     private String reference;
 
-
     @OneToMany(mappedBy = "article" , cascade = CascadeType.ALL)
     private List<Chapter> chapters = new ArrayList<>();
 

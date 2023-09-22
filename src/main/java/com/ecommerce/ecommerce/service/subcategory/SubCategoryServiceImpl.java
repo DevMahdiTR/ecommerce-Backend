@@ -119,7 +119,8 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
             images.add(image);
         }
         article.setFiles(images);
-        articleService.save(article);
+        currentSubCategory.getArticles().add(article);
+        subCategoryRepository.save(currentSubCategory);
 
         final String successResponse = String.format("The Article with TITLE : %s added successfully",article.getTitle());
         return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
