@@ -3,7 +3,6 @@ package com.ecommerce.ecommerce.service.category;
 import com.ecommerce.ecommerce.dto.category.CategoryDTO;
 import com.ecommerce.ecommerce.dto.category.CategoryDTOMapper;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
-import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTOMapper;
 import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.ecommerce.model.category.Category;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
@@ -23,10 +22,14 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryRepository categoryRepository;
     private final CategoryDTOMapper categoryDTOMapper;
     private final SubCategoryService subCategoryService;
+
+
     public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService) {
         this.categoryRepository = categoryRepository;
         this.categoryDTOMapper = categoryDTOMapper;
         this.subCategoryService = subCategoryService;
+
+
     }
 
     @Override
@@ -64,7 +67,6 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CustomResponseEntity<String> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory) {
         final Category currentCategory =  getCategoryById(categoryId);
-
         subCategory.setCategory(currentCategory);
         currentCategory.getSubCategories().add(subCategory);
         categoryRepository.save(currentCategory);
@@ -87,7 +89,6 @@ public class CategoryServiceImpl implements CategoryService{
         subCategoryService.deleteSubCategoryById(currentSubCategory.getId());
         categoryRepository.save(currentCategory);
         final CategoryDTO category  = categoryDTOMapper.apply(currentCategory);
-
         return new CustomResponseEntity<>(HttpStatus.OK , category);
 
     }
