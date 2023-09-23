@@ -4,18 +4,22 @@ import java.util.*;
 
 public class GlobalLRUCache<K,V> {
 
-    private final int capacity;
+    private final int capacity = 5;
     private final Map<K, Map<String, Object>> cache;
     private final LinkedList<K> lruQueue;
+    private static  GlobalLRUCache<String, Map<String, Object>> instance;
 
-    private static final GlobalLRUCache<String, Map<String, Object>> globalCache = new GlobalLRUCache<>(60);
-
-    public GlobalLRUCache(int capacity) {
-        this.capacity = capacity;
+    private GlobalLRUCache() {
         this.cache = new LinkedHashMap<>(capacity, 0.75f, true);
         this.lruQueue = new LinkedList<>();
     }
 
+    public static synchronized  GlobalLRUCache<String, Map<String, Object>> getInstance() {
+        if (instance == null) {
+            instance = new GlobalLRUCache<>();
+        }
+        return instance;
+    }
     public Map<String, Object> getAll(K key) {
         synchronized (cache) {
             if (cache.containsKey(key)) {

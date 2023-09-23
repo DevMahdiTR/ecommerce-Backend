@@ -13,6 +13,6 @@ public class CacheConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public GlobalLRUCache<String, Map<String, Object>> cacheSystem() {
-        return new GlobalLRUCache<>(60); // Provide the capacity as needed
+        return GlobalLRUCache.getInstance();
     }
 }

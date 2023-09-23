@@ -9,6 +9,7 @@ import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import com.ecommerce.ecommerce.service.subcategory.SubCategoryService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
+import com.ecommerce.ecommerce.utility.cachesystem.GlobalLRUCache;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,10 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryDTOMapper categoryDTOMapper;
     private final SubCategoryService subCategoryService;
 
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService, GlobalLRUCache globalLRUCache) {
         this.categoryRepository = categoryRepository;
         this.categoryDTOMapper = categoryDTOMapper;
         this.subCategoryService = subCategoryService;
-
 
     }
 
