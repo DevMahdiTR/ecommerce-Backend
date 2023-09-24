@@ -16,6 +16,9 @@ public interface ArticleService {
     public CustomResponseEntity<ArticleDTO> fetchArticleById(final long articleId);
     public CustomResponseEntity<String> updateArticleById(final long articleId, List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException;
     public CustomResponseEntity<String> deleteArticleById(final long articleId) throws IOException;
+    public CustomResponseEntity<String> addImageToArticle(final long articleId , @NotNull final MultipartFile image);
+    public CustomResponseEntity<String> removeImageFromArticle(final long articleId , final long imageId);
+    public CustomResponseEntity<byte[]> downloadImageFromArticle(final long articleId) throws IOException;
     public CustomResponseList<ArticleDTO> fetchAllArticle(final long pageNumber);
     public void deleteAllArticles (final List<Article> articles);
     public ArticleDTO mapToDTOItem(final Article article);

@@ -9,7 +9,6 @@ import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import com.ecommerce.ecommerce.service.subcategory.SubCategoryService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
-import com.ecommerce.ecommerce.utility.cachesystem.GlobalLRUCache;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,17 +23,18 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryDTOMapper categoryDTOMapper;
     private final SubCategoryService subCategoryService;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService, GlobalLRUCache globalLRUCache) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService) {
         this.categoryRepository = categoryRepository;
         this.categoryDTOMapper = categoryDTOMapper;
         this.subCategoryService = subCategoryService;
-
     }
 
     @Override
     public CustomResponseEntity<CategoryDTO> createCategory(@NotNull final Category category) {
         final Category currentCategory = categoryRepository.save(category);
         final CategoryDTO categoryDTO = categoryDTOMapper.apply(currentCategory);
+
+
         return new CustomResponseEntity<>(HttpStatus.CREATED ,categoryDTO);
     }
 
@@ -43,6 +43,8 @@ public class CategoryServiceImpl implements CategoryService{
         final Category currentCategory = getCategoryById(categoryId);
         currentCategory.setTitle(categoryDetails.getTitle());
         categoryRepository.save(currentCategory);
+
+
         final String successResponse = String.format("The Category with ID : %d updated successfully.",categoryId);
         return new CustomResponseEntity<>(HttpStatus.OK,successResponse);
     }
@@ -70,6 +72,8 @@ public class CategoryServiceImpl implements CategoryService{
         currentCategory.getSubCategories().add(subCategory);
         categoryRepository.save(currentCategory);
         final String successResponse = String.format("The Sub category with TITLE : %s added successfully",subCategory.getTitle());
+
+
         return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
     }
 
@@ -96,6 +100,9 @@ public class CategoryServiceImpl implements CategoryService{
     public CustomResponseEntity<CategoryDTO> fetchCategoryById(final long categoryId) {
         final Category currentCategory = getCategoryById(categoryId);
         final CategoryDTO category = categoryDTOMapper.apply(currentCategory);
+
+
+
         return new CustomResponseEntity<>(HttpStatus.OK , category);
     }
 

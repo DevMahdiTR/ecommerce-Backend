@@ -37,6 +37,6 @@ public class SubCategory {
     private Category category;
 
 
-    @OneToMany(mappedBy = "subCategory" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subCategory" , cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     private List<Article> articles = new ArrayList<>();
 }

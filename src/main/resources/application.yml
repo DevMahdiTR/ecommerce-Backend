@@ -12,8 +12,8 @@ spring:
             enable : true
   servlet:
     multipart:
-      max-request-size: 3MB
-      max-file-size: 3MB
+      max-request-size: 30MB
+      max-file-size: 30MB
   datasource:
     url: jdbc:postgresql://localhost:5432/ecommerce
     username: postgres

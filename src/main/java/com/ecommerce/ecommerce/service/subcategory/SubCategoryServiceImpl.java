@@ -93,10 +93,6 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
 
     @Override
     public CustomResponseEntity<String> addArticleToSubCategoryById(long subCategoryId, @NotNull List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
-        if(multipartFiles.size() >= 5)
-        {
-            throw  new IllegalStateException("You exceeded the images limits  (max : 5) .");
-        }
 
 
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);

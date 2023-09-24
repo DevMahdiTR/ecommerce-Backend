@@ -48,5 +48,9 @@ public class ArticleController {
         return articleService.fetchAllArticle(pageNumber);
     }
 
+    @GetMapping("/{articleId}/images")
+    public CustomResponseEntity<byte[]> downloadImageFromArticle(@PathVariable("articleId") final long articleId) throws IOException {
+        return articleService.downloadImageFromArticle(articleId);
+    }
 
 }

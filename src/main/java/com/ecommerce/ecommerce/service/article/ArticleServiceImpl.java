@@ -15,11 +15,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +103,22 @@ public class ArticleServiceImpl implements ArticleService{
         final String successResponse = String.format("Article with ID %d deleted successfully", articleId);
         return new CustomResponseEntity<>(HttpStatus.OK, successResponse);
     }
+
+    @Override
+    public CustomResponseEntity<String> addImageToArticle(long articleId, @NotNull MultipartFile image) {
+        return null;
+    }
+
+    @Override
+    public CustomResponseEntity<String> removeImageFromArticle(long articleId, long imageId) {
+        return null;
+    }
+
+    @Override
+    public CustomResponseEntity<byte[]> downloadImageFromArticle(long articleId) throws IOException {
+        return null;
+    }
+
 
     @Override
     public CustomResponseList<ArticleDTO> fetchAllArticle(final long pageNumber) {

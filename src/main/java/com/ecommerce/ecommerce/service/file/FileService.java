@@ -15,7 +15,8 @@ public interface FileService {
     public ResponseEntity<byte[]> downloadFile(@NotNull final  FileData fileData) throws IOException;
     public void deleteFileFromFileSystem(@NotNull final FileData fileData) throws IOException ;
     public void deleteAllFiles(@NotNull final List<FileData> files) throws IOException;
-    public FileData getFileDataById(long fileDataId);
+    public String determineContentType(@NotNull String filePath);
+        public FileData getFileDataById(long fileDataId);
 
 
 }
