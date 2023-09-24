@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryDTOMapper categoryDTOMapper;
     private final SubCategoryService subCategoryService;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOMapper categoryDTOMapper , SubCategoryService subCategoryService ) {
         this.categoryRepository = categoryRepository;
         this.categoryDTOMapper = categoryDTOMapper;
         this.subCategoryService = subCategoryService;
@@ -43,8 +43,6 @@ public class CategoryServiceImpl implements CategoryService{
         final Category currentCategory = getCategoryById(categoryId);
         currentCategory.setTitle(categoryDetails.getTitle());
         categoryRepository.save(currentCategory);
-
-
         final String successResponse = String.format("The Category with ID : %d updated successfully.",categoryId);
         return new CustomResponseEntity<>(HttpStatus.OK,successResponse);
     }
@@ -100,9 +98,6 @@ public class CategoryServiceImpl implements CategoryService{
     public CustomResponseEntity<CategoryDTO> fetchCategoryById(final long categoryId) {
         final Category currentCategory = getCategoryById(categoryId);
         final CategoryDTO category = categoryDTOMapper.apply(currentCategory);
-
-
-
         return new CustomResponseEntity<>(HttpStatus.OK , category);
     }
 
