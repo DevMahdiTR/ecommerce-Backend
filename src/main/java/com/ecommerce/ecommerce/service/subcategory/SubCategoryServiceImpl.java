@@ -11,9 +11,11 @@ import com.ecommerce.ecommerce.repository.SubCategoryRepository;
 import com.ecommerce.ecommerce.service.article.ArticleService;
 import com.ecommerce.ecommerce.service.file.FileService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
+import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,18 +42,18 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
     }
 
     @Override
-    public CustomResponseEntity<String> updateSubCategory(long subCategoryId, @NotNull SubCategory subCategory) {
+    public ResponseEntity<Object> updateSubCategory(long subCategoryId, @NotNull SubCategory subCategory) {
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
         currentSubCategory.setTitle(subCategory.getTitle());
         subCategoryRepository.save(currentSubCategory);
 
         final String successResponse = String.format("The Sub category with ID : %d updated successfully", subCategoryId);
-        return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
+        return ResponseHandler.generateResponse(successResponse ,HttpStatus.OK);
     }
 
     @Transactional
     @Override
-    public CustomResponseEntity<String> deleteSubCategory(long subCategoryId) {
+    public ResponseEntity<Object> deleteSubCategory(long subCategoryId) {
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
         final List<Article> articles = currentSubCategory.getArticles();
 
@@ -63,36 +65,44 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
         deleteSubCategoryById(currentSubCategory.getId());
 
         final String successResponse = String.format("The Sub Category with ID : %d deleted successfully.",subCategoryId);
-        return new CustomResponseEntity<>(HttpStatus.OK, successResponse);
+        return ResponseHandler.generateResponse(successResponse,HttpStatus.OK);
 
     }
 
     @Override
-    public CustomResponseEntity<SubCategoryDTO> fetchSubCategoryById(long subCategoryId) {
+    public ResponseEntity<Object> fetchSubCategoryById(long subCategoryId) {
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
         final SubCategoryDTO subCategory = subCategoryDTOMapper.apply(currentSubCategory);
-        return new CustomResponseEntity<>(HttpStatus.OK , subCategory);
+        return ResponseHandler.generateResponse(subCategory , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategory() {
+    public ResponseEntity<Object> fetchAllSubCategory() {
         final List<SubCategory> currentSubCategories = subCategoryRepository.fetchAllSubCategories();
         final List<SubCategoryDTO> subCategories = currentSubCategories.stream().map(subCategoryDTOMapper).toList();
 
-        return new CustomResponseEntity<>(HttpStatus.OK, subCategories);
+        return ResponseHandler.generateResponse(subCategories,HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<List<ArticleDTO>> fetchArticleFromSubCategory(long subCategoryId) {
+    public ResponseEntity<Object> fetchArticleFromSubCategory(final long subCategoryId , final long pageNumber) {
+
+        final int pageLength = 10;
+        final int startIndex = (int) (pageLength * (pageNumber - 1));
+
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
-        final List<Article> currentArticles = currentSubCategory.getArticles();
+        final List<Article> currentArticles = currentSubCategory.getArticles().stream().skip(startIndex).limit(10).toList();
+        if(currentArticles.size() == 0 && pageNumber > 1)
+        {
+            return fetchArticleFromSubCategory(subCategoryId , 1);
+        }
         final List<ArticleDTO> articles = articleService.mapToDTOList(currentArticles);
 
-        return new CustomResponseEntity<>(HttpStatus.OK , articles);
+        return ResponseHandler.generateResponse(articles , HttpStatus.OK , articles.size() , currentSubCategory.getArticles().size());
     }
 
     @Override
-    public CustomResponseEntity<String> addArticleToSubCategoryById(long subCategoryId, @NotNull List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
+    public ResponseEntity<Object> addArticleToSubCategoryById(long subCategoryId, @NotNull List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
 
 
         final SubCategory currentSubCategory = getSubCategoryById(subCategoryId);
@@ -119,7 +129,7 @@ public class SubCategoryServiceImpl implements  SubCategoryService{
         subCategoryRepository.save(currentSubCategory);
 
         final String successResponse = String.format("The Article with TITLE : %s added successfully",article.getTitle());
-        return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
+        return ResponseHandler.generateResponse(successResponse, HttpStatus.OK);
     }
 
     @Override

@@ -21,13 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public CustomResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterDTO registerDto)
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterDTO registerDto)
     {
         return authService.register(registerDto);
     }
 
     @PostMapping("/login")
-    public CustomResponseEntity<LogInResponseDTO>  login(@Valid @RequestBody LoginDTO loginDto)
+    public ResponseEntity<Object>  login(@Valid @RequestBody LoginDTO loginDto)
     {
         return authService.login(loginDto);
     }
@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh/{refreshToken}")
-    public CustomResponseEntity<RefreshTokenResponseDTO> renewAccessToken(@RequestParam("expiredToken") final String expiredToken, @PathVariable("refreshToken") final String refreshToken)
+    public ResponseEntity<Object> renewAccessToken(@RequestParam("expiredToken") final String expiredToken, @PathVariable("refreshToken") final String refreshToken)
     {
         return authService.renewAccessToken(refreshToken,expiredToken);
     }

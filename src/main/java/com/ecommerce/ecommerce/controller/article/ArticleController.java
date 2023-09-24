@@ -5,6 +5,8 @@ import com.ecommerce.ecommerce.dto.article.ArticleDTO;
 import com.ecommerce.ecommerce.service.article.ArticleService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import com.ecommerce.ecommerce.utility.CustomResponseList;
+import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,13 +25,13 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public CustomResponseEntity<ArticleDTO> fetchArticleById(@PathVariable("articleId") final long articleId)
+    public ResponseEntity<Object> fetchArticleById(@PathVariable("articleId") final long articleId)
     {
         return articleService.fetchArticleById(articleId);
     }
 
     @PutMapping("/{articleId}")
-    public CustomResponseEntity<String> updateArticleById(
+    public  ResponseEntity<Object> updateArticleById(
             @PathVariable("articleId") final long articleId,
             @RequestParam(value = "images", required = false) List<MultipartFile> multipartFiles,
             @RequestParam(value = "articleJson", required = true) final String articleJson
@@ -38,12 +40,12 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{articleId}")
-    public CustomResponseEntity<String> deleteArticleById(@PathVariable("articleId") final long articleId) throws IOException {
+    public ResponseEntity<Object> deleteArticleById(@PathVariable("articleId") final long articleId) throws IOException {
         return articleService.deleteArticleById(articleId);
     }
 
     @GetMapping()
-    public CustomResponseList<ArticleDTO> fetchAllArticles(@RequestParam("pageNumber") final long pageNumber)
+    public  ResponseEntity<Object> fetchAllArticles(@RequestParam("pageNumber") final long pageNumber)
     {
         return articleService.fetchAllArticle(pageNumber);
     }

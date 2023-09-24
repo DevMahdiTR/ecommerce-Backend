@@ -16,8 +16,10 @@ import com.ecommerce.ecommerce.service.token.TokenService;
 import com.ecommerce.ecommerce.service.user.UserEntityService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import com.ecommerce.ecommerce.security.jwt.JWTService;
+import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -60,7 +62,7 @@ public class AuthServiceImpl  implements  AuthService{
     }
 
     @Override
-    public CustomResponseEntity<RegisterResponseDTO> register(@NotNull final RegisterDTO registerDto) {
+    public ResponseEntity<Object> register(@NotNull final RegisterDTO registerDto) {
         if (userEntityService.isEmailRegistered(registerDto.getEmail())) {
             throw new IllegalArgumentException("Sorry, that email is already taken. Please choose a different one.");
         }
@@ -86,18 +88,18 @@ public class AuthServiceImpl  implements  AuthService{
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + confirmationToken;
         emailSenderService.sendEmail(savedUser.getEmail(),"Confirmation email" , emailSenderService.emailTemplateConfirmation(savedUser.getFirstName(),link));
 
-        final RegisterResponseDTO registerResponseDTO = RegisterResponseDTO
+        final RegisterResponseDTO registerResponse = RegisterResponseDTO
                 .builder()
                 .confirmationToken(confirmationToken)
                 .refreshToken(refreshToken)
                 .userEntityDTO(userEntityDTOMapper.apply(savedUser))
                 .build();
 
-        return new CustomResponseEntity<>(HttpStatus.OK, registerResponseDTO);
+        return ResponseHandler.generateResponse(registerResponse , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<LogInResponseDTO> login(@NotNull LoginDTO loginDto) {
+    public ResponseEntity<Object> login(@NotNull LoginDTO loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
@@ -113,13 +115,13 @@ public class AuthServiceImpl  implements  AuthService{
         String jwtRefreshToken = refreshTokenService.generateRefreshToken(user);
 
 
-        final LogInResponseDTO logInResponseDto = LogInResponseDTO
+        final LogInResponseDTO logInResponse = LogInResponseDTO
                 .builder()
                 .userEntityDTO(userEntityDTOMapper.apply(user))
                 .accessToken(jwtAccessToken)
                 .refreshToken(jwtRefreshToken)
                 .build();
-        return new CustomResponseEntity<>(HttpStatus.OK, logInResponseDto);
+        return ResponseHandler.generateResponse( logInResponse,HttpStatus.OK);
     }
 
     @Override
@@ -144,7 +146,7 @@ public class AuthServiceImpl  implements  AuthService{
     }
 
     @Override
-    public CustomResponseEntity<RefreshTokenResponseDTO> renewAccessToken(final String refreshToken , final String expiredToken)
+    public ResponseEntity<Object> renewAccessToken(final String refreshToken , final String expiredToken)
     {
         final Token currentToken = tokenService.getTokenByToken(expiredToken);
         final UserEntity currentUser = currentToken.getUserEntity();
@@ -156,12 +158,12 @@ public class AuthServiceImpl  implements  AuthService{
         }
         revokeAllUserAccessTokens(currentUser);
         String jwtAccessToken = revokeGenerateAndSaveToken(currentUser);
-        final RefreshTokenResponseDTO refreshTokenResponseDTO = RefreshTokenResponseDTO
+        final RefreshTokenResponseDTO refreshTokenResponse = RefreshTokenResponseDTO
                 .builder()
                 .accessToken(jwtAccessToken)
                 .refreshToken(refreshToken)
                 .build();
-        return new CustomResponseEntity<>(HttpStatus.OK,refreshTokenResponseDTO);
+        return ResponseHandler.generateResponse(refreshTokenResponse , HttpStatus.OK);
     }
 
     private String revokeGenerateAndSaveToken(UserEntity user) {

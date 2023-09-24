@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
-    public CustomResponseEntity<RegisterResponseDTO> register(@NotNull final RegisterDTO registerDto) ;
-    public CustomResponseEntity<LogInResponseDTO>  login(@NotNull final LoginDTO loginDto);
-    public CustomResponseEntity<RefreshTokenResponseDTO> renewAccessToken(final String refreshToken, final String expiredToken);
+    public ResponseEntity<Object> register(@NotNull final RegisterDTO registerDto) ;
+    public ResponseEntity<Object>  login(@NotNull final LoginDTO loginDto);
+    public ResponseEntity<Object> renewAccessToken(final String refreshToken, final String expiredToken);
     public String confirmToken(final String token);
 
 }

@@ -6,6 +6,7 @@ import com.ecommerce.ecommerce.model.article.Article;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,12 +14,12 @@ import java.util.List;
 
 public interface SubCategoryService {
 
-    public CustomResponseEntity<String> updateSubCategory(final long subCategoryId , @NotNull final SubCategory subCategory);
-    public CustomResponseEntity<String> deleteSubCategory(final long subCategoryId);
-    public CustomResponseEntity<SubCategoryDTO> fetchSubCategoryById(final long subCategoryId);
-    public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategory();
-    public CustomResponseEntity<List<ArticleDTO>> fetchArticleFromSubCategory(final long subCategoryId);
-    public CustomResponseEntity<String> addArticleToSubCategoryById(
+    public ResponseEntity<Object> updateSubCategory(final long subCategoryId , @NotNull final SubCategory subCategory);
+    public ResponseEntity<Object> deleteSubCategory(final long subCategoryId);
+    public ResponseEntity<Object> fetchSubCategoryById(final long subCategoryId);
+    public ResponseEntity<Object> fetchAllSubCategory();
+    public ResponseEntity<Object> fetchArticleFromSubCategory(final long subCategoryId , final long pageNumber);
+    public ResponseEntity<Object> addArticleToSubCategoryById(
             long subCategoryId ,
             final @NotNull List<MultipartFile> multipartFiles,
             @NotNull final String articleJson

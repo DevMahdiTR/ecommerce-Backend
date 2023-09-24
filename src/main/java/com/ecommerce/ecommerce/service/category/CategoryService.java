@@ -6,6 +6,7 @@ import com.ecommerce.ecommerce.model.category.Category;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +14,14 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CustomResponseEntity<CategoryDTO> createCategory(@NotNull final Category category);
-    CustomResponseEntity<String> updateCategory(final long categoryId , @NotNull final Category category);
-    CustomResponseEntity<String> deleteCategoryById(final long categoryId);
-    CustomResponseEntity<String> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory);
-    public CustomResponseEntity<CategoryDTO> removeSubCategory(final long categoryId, final long subCategoryId) ;
-    CustomResponseEntity<CategoryDTO> fetchCategoryById(final long categoryId);
-    CustomResponseEntity<List<CategoryDTO>> fetchAllCategories();
-    CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategoryInCategoryById(final long categoryId);
+    ResponseEntity<Object> createCategory(@NotNull final Category category);
+    ResponseEntity<Object> updateCategory(final long categoryId , @NotNull final Category category);
+    ResponseEntity<Object> deleteCategoryById(final long categoryId);
+    ResponseEntity<Object> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory);
+    ResponseEntity<Object> removeSubCategory(final long categoryId, final long subCategoryId) ;
+    ResponseEntity<Object> fetchCategoryById(final long categoryId);
+    ResponseEntity<Object> fetchAllCategories();
+    ResponseEntity<Object> fetchAllSubCategoryInCategoryById(final long categoryId);
     public Category getCategoryById(final long categoryId);
 
 

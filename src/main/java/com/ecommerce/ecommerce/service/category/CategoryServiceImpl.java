@@ -9,8 +9,10 @@ import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import com.ecommerce.ecommerce.service.subcategory.SubCategoryService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
+import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,26 +32,24 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public CustomResponseEntity<CategoryDTO> createCategory(@NotNull final Category category) {
+    public ResponseEntity<Object> createCategory(@NotNull final Category category) {
         final Category currentCategory = categoryRepository.save(category);
         final CategoryDTO categoryDTO = categoryDTOMapper.apply(currentCategory);
-
-
-        return new CustomResponseEntity<>(HttpStatus.CREATED ,categoryDTO);
+        return ResponseHandler.generateResponse(categoryDTO,HttpStatus.CREATED);
     }
 
     @Override
-    public CustomResponseEntity<String> updateCategory(final long categoryId, @NotNull final Category categoryDetails) {
+    public ResponseEntity<Object> updateCategory(final long categoryId, @NotNull final Category categoryDetails) {
         final Category currentCategory = getCategoryById(categoryId);
         currentCategory.setTitle(categoryDetails.getTitle());
-        categoryRepository.save(currentCategory);
+        categoryDTOMapper.apply(categoryRepository.save(currentCategory));
         final String successResponse = String.format("The Category with ID : %d updated successfully.",categoryId);
-        return new CustomResponseEntity<>(HttpStatus.OK,successResponse);
+        return ResponseHandler.generateResponse(successResponse,HttpStatus.OK);
     }
 
     @Transactional
     @Override
-    public CustomResponseEntity<String> deleteCategoryById(final long categoryId) {
+    public ResponseEntity<Object> deleteCategoryById(final long categoryId) {
         final Category currentCategory = getCategoryById(categoryId);
         final List<SubCategory> subCategories = currentCategory.getSubCategories();
 
@@ -60,23 +60,22 @@ public class CategoryServiceImpl implements CategoryService{
         categoryRepository.deleteCategoriesById(categoryId);
 
         final String successResponse = String.format("The Category with ID : %d deleted successfully.",categoryId);
-        return new CustomResponseEntity<>(HttpStatus.OK, successResponse);
+        return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<String> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory) {
+    public ResponseEntity<Object> addSubCategory(final long categoryId, @NotNull final SubCategory subCategory) {
         final Category currentCategory =  getCategoryById(categoryId);
         subCategory.setCategory(currentCategory);
         currentCategory.getSubCategories().add(subCategory);
         categoryRepository.save(currentCategory);
+
         final String successResponse = String.format("The Sub category with TITLE : %s added successfully",subCategory.getTitle());
-
-
-        return new CustomResponseEntity<>(HttpStatus.OK , successResponse);
+        return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<CategoryDTO> removeSubCategory(final long categoryId, final long subCategoryId) {
+    public ResponseEntity<Object> removeSubCategory(final long categoryId, final long subCategoryId) {
         final Category currentCategory = getCategoryById(categoryId);
         final SubCategory currentSubCategory = subCategoryService.getSubCategoryById(subCategoryId);
 
@@ -89,30 +88,31 @@ public class CategoryServiceImpl implements CategoryService{
         currentSubCategory.setArticles(null);
         subCategoryService.deleteSubCategoryById(currentSubCategory.getId());
         categoryRepository.save(currentCategory);
-        final CategoryDTO category  = categoryDTOMapper.apply(currentCategory);
-        return new CustomResponseEntity<>(HttpStatus.OK , category);
+
+        final String successResponse = String.format("The Sub category with ID : %d deleted successfully",subCategoryId);
+        return ResponseHandler.generateResponse(successResponse,HttpStatus.OK);
 
     }
 
     @Override
-    public CustomResponseEntity<CategoryDTO> fetchCategoryById(final long categoryId) {
+    public ResponseEntity<Object> fetchCategoryById(final long categoryId) {
         final Category currentCategory = getCategoryById(categoryId);
         final CategoryDTO category = categoryDTOMapper.apply(currentCategory);
-        return new CustomResponseEntity<>(HttpStatus.OK , category);
+        return ResponseHandler.generateResponse(category , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<List<CategoryDTO>> fetchAllCategories() {
+    public ResponseEntity<Object> fetchAllCategories() {
         final List<Category> currentCategories = categoryRepository.fetchAllCategory();
         final List<CategoryDTO> categories = currentCategories.stream().map(categoryDTOMapper).toList();
-        return new CustomResponseEntity<>(HttpStatus.OK , categories);
+        return ResponseHandler.generateResponse(categories , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategoryInCategoryById(final long categoryId) {
+    public ResponseEntity<Object> fetchAllSubCategoryInCategoryById(final long categoryId) {
         final Category currentCategory = getCategoryById(categoryId);
         final List<SubCategoryDTO> subCategories = subCategoryService.mapToDTOList(currentCategory.getSubCategories());
-        return new CustomResponseEntity<>(HttpStatus.OK , subCategories);
+        return ResponseHandler.generateResponse(subCategories , HttpStatus.OK);
     }
 
     @Override

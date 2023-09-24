@@ -11,6 +11,7 @@ import com.ecommerce.ecommerce.service.detail.DetailService;
 import com.ecommerce.ecommerce.service.file.FileService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import com.ecommerce.ecommerce.utility.CustomResponseList;
+import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,14 +48,14 @@ public class ArticleServiceImpl implements ArticleService{
 
 
     @Override
-    public CustomResponseEntity<ArticleDTO> fetchArticleById(final long articleId) {
+    public ResponseEntity<Object> fetchArticleById(final long articleId) {
         final Article currentArticle = getArticleById(articleId);
         final ArticleDTO article = articleDTOMapper.apply(currentArticle);
-        return new CustomResponseEntity<>(HttpStatus.OK , article);
+        return ResponseHandler.generateResponse(article , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<String> updateArticleById(final long articleId, List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
+    public ResponseEntity<Object> updateArticleById(final long articleId, List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
 
         final Article existingArticle  = getArticleById(articleId);
         final Article updatedArticle = new ObjectMapper().readValue(articleJson , Article.class);
@@ -88,11 +90,11 @@ public class ArticleServiceImpl implements ArticleService{
 
 
         final String successResponse = String.format("Article with ID %d updated successfully", articleId);
-        return new CustomResponseEntity<>(HttpStatus.OK, successResponse);
+        return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<String> deleteArticleById(long articleId) throws IOException {
+    public ResponseEntity<Object> deleteArticleById(long articleId) throws IOException {
         final Article existingArticle = getArticleById(articleId);
 
         chapterService.deleteAllChapters(existingArticle.getChapters());
@@ -101,16 +103,16 @@ public class ArticleServiceImpl implements ArticleService{
         articleRepository.deleteArticleById(articleId);
 
         final String successResponse = String.format("Article with ID %d deleted successfully", articleId);
-        return new CustomResponseEntity<>(HttpStatus.OK, successResponse);
+        return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }
 
     @Override
-    public CustomResponseEntity<String> addImageToArticle(long articleId, @NotNull MultipartFile image) {
+    public ResponseEntity<Object> addImageToArticle(long articleId, @NotNull MultipartFile image) {
         return null;
     }
 
     @Override
-    public CustomResponseEntity<String> removeImageFromArticle(long articleId, long imageId) {
+    public ResponseEntity<Object> removeImageFromArticle(long articleId, long imageId) {
         return null;
     }
 
@@ -121,7 +123,7 @@ public class ArticleServiceImpl implements ArticleService{
 
 
     @Override
-    public CustomResponseList<ArticleDTO> fetchAllArticle(final long pageNumber) {
+    public ResponseEntity<Object> fetchAllArticle(final long pageNumber) {
         final Pageable pageable = PageRequest.of((int) pageNumber - 1, 10);
 
         final List<ArticleDTO> articles = articleRepository.fetchAllArticles(pageable).stream().map(articleDTOMapper).toList();
@@ -129,12 +131,8 @@ public class ArticleServiceImpl implements ArticleService{
         {
             return fetchAllArticle(1);
         }
-        return new CustomResponseList<>(
-                HttpStatus.OK,
-                articles,
-                articles.size(),
-                articleRepository.getTotalArticleCount()
-        );
+        final long total  = articleRepository.getTotalArticleCount();
+        return ResponseHandler.generateResponse(articles , HttpStatus.OK , articles.size() , total);
     }
 
     @Override

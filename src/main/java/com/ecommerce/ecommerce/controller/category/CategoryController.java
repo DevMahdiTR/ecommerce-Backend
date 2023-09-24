@@ -9,6 +9,7 @@ import com.ecommerce.ecommerce.service.category.CategoryService;
 import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
@@ -25,50 +26,50 @@ public class CategoryController {
     }
 
     @PostMapping()
-    public CustomResponseEntity<CategoryDTO> createCategory(@NotNull @Valid @RequestBody final Category category)
+    public ResponseEntity<Object> createCategory(@NotNull @Valid @RequestBody final Category category)
     {
         return categoryService.createCategory(category);
     }
 
 
     @PutMapping("/{categoryId}")
-    public CustomResponseEntity<String> updateCategory(@PathVariable("categoryId")final long categoryId, @NotNull @Valid @RequestBody final Category categoryDetails)
+    public ResponseEntity<Object> updateCategory(@PathVariable("categoryId")final long categoryId, @NotNull @Valid @RequestBody final Category categoryDetails)
     {
         return categoryService.updateCategory(categoryId , categoryDetails);
     }
 
     @PutMapping("/{categoryId}/subcategories")
-    public CustomResponseEntity<String> addSubCategory(@PathVariable("categoryId") final long categoryId , @NotNull @Valid @RequestBody final SubCategory subCategory)
+    public ResponseEntity<Object> addSubCategory(@PathVariable("categoryId") final long categoryId , @NotNull @Valid @RequestBody final SubCategory subCategory)
     {
         return categoryService.addSubCategory(categoryId , subCategory);
     }
 
     @PutMapping("/{categoryId}/subcategories/{subCategoryId}")
-    public CustomResponseEntity<CategoryDTO> removeSubCategory(@PathVariable("categoryId") final long categoryId, @PathVariable("subCategoryId") final long subCategoryId)
+    public ResponseEntity<Object> removeSubCategory(@PathVariable("categoryId") final long categoryId, @PathVariable("subCategoryId") final long subCategoryId)
     {
         return categoryService.removeSubCategory(categoryId,subCategoryId);
     }
 
     @GetMapping("/{categoryId}")
-    public CustomResponseEntity<CategoryDTO> fetchCategoryById(@PathVariable("categoryId") final long categoryId)
+    public ResponseEntity<Object> fetchCategoryById(@PathVariable("categoryId") final long categoryId)
     {
         return categoryService.fetchCategoryById(categoryId);
     }
 
     @GetMapping()
-    public CustomResponseEntity<List<CategoryDTO>> fetchAllCategories()
+    public ResponseEntity<Object> fetchAllCategories()
     {
         return categoryService.fetchAllCategories();
     }
 
     @GetMapping("/{categoryId}/subcategories")
-    public CustomResponseEntity<List<SubCategoryDTO>> fetchAllSubCategoryInCategoryById(@PathVariable("categoryId") final long categoryId)
+    public ResponseEntity<Object> fetchAllSubCategoryInCategoryById(@PathVariable("categoryId") final long categoryId)
     {
         return categoryService.fetchAllSubCategoryInCategoryById(categoryId);
     }
 
     @DeleteMapping("/{categoryId}")
-    public CustomResponseEntity<String> deleteCategory(@PathVariable("categoryId")final long categoryId)
+    public ResponseEntity<Object> deleteCategory(@PathVariable("categoryId")final long categoryId)
     {
         return categoryService.deleteCategoryById(categoryId);
     }
