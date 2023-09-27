@@ -1,11 +1,5 @@
 package com.ecommerce.ecommerce.controller.article;
-
-
-import com.ecommerce.ecommerce.dto.article.ArticleDTO;
 import com.ecommerce.ecommerce.service.article.ArticleService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
-import com.ecommerce.ecommerce.utility.CustomResponseList;
-import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,9 +44,9 @@ public class ArticleController {
         return articleService.fetchAllArticle(pageNumber);
     }
 
-    @GetMapping("/{articleId}/images")
-    public CustomResponseEntity<byte[]> downloadImageFromArticle(@PathVariable("articleId") final long articleId) throws IOException {
-        return articleService.downloadImageFromArticle(articleId);
+    @GetMapping("/{articleId}/images/{fileIndex}")
+    public ResponseEntity<byte[]>  fetchImageFromArticle(@PathVariable("articleId") final long articleId ,@PathVariable("fileIndex") final int fileIndex) throws IOException {
+        return articleService.fetchImageFromArticle(articleId , fileIndex);
     }
 
 }

@@ -20,7 +20,7 @@ public class ResponseHandler {
         return new ResponseEntity<>(map , status);
     }
 
-    public static ResponseEntity<Object> generateResponse(HttpStatus status , Object responseObj , HttpHeaders headers)
+    public static ResponseEntity<Object> generateResponse(Object responseObj , HttpHeaders headers, HttpStatus status)
     {
         Map<String , Object> map = new HashMap<>();
         map.put("status" , status.value());

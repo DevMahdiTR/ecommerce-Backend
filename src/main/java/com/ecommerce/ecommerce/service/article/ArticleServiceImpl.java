@@ -115,10 +115,16 @@ public class ArticleServiceImpl implements ArticleService{
     public ResponseEntity<Object> removeImageFromArticle(long articleId, long imageId) {
         return null;
     }
-
     @Override
-    public CustomResponseEntity<byte[]> downloadImageFromArticle(long articleId) throws IOException {
-        return null;
+    public  ResponseEntity<byte[]> fetchImageFromArticle(final long articleId,final int fileIndex) throws IOException {
+
+        final Article article = getArticleById(articleId);
+        if(fileIndex >= article.getFiles().size())
+        {
+            throw new IllegalStateException("The file index is out of range.");
+        }
+        final FileData fileData = article.getFiles().get(fileIndex);
+        return fileService.downloadFile(fileData);
     }
 
 

@@ -19,7 +19,7 @@ public interface ArticleService {
     public ResponseEntity<Object> deleteArticleById(final long articleId) throws IOException;
     public ResponseEntity<Object> addImageToArticle(final long articleId , @NotNull final MultipartFile image);
     public ResponseEntity<Object> removeImageFromArticle(final long articleId , final long imageId);
-    public CustomResponseEntity<byte[]> downloadImageFromArticle(final long articleId) throws IOException;
+    public ResponseEntity<byte[]>  fetchImageFromArticle(final long articleId, final int fileIndex) throws IOException;
     public ResponseEntity<Object> fetchAllArticle(final long pageNumber);
     public void deleteAllArticles (final List<Article> articles);
     public ArticleDTO mapToDTOItem(final Article article);
