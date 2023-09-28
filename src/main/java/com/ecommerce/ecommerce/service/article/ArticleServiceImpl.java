@@ -111,6 +111,7 @@ public class ArticleServiceImpl implements ArticleService{
         final Article existingArticle =  getArticleById(articleId);
         final FileData newImage = fileService.processUploadedFile(image);
         newImage.setArticle(existingArticle);
+        articleRepository.save(existingArticle);
 
         final String successResponse ="The image is added successfully.";
         return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
@@ -129,7 +130,7 @@ public class ArticleServiceImpl implements ArticleService{
         exisitingArticle.getFiles().remove(existingImage);
         existingImage.setArticle(null);
         fileService.deleteFileFromFileSystem(existingImage);
-
+        articleRepository.save(exisitingArticle);
         final String successResponse = String.format("The image with ID : %d deleted successfully",imageId);
         return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }

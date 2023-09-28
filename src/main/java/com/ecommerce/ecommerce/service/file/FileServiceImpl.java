@@ -58,7 +58,7 @@ public class FileServiceImpl implements  FileService{
                 .type(file.getContentType())
                 .filePath(filePath)
                 .build();
-
+        fileDataRepository.save(fileData);
         file.transferTo(new File(filePath));
         return fileData;
     }
