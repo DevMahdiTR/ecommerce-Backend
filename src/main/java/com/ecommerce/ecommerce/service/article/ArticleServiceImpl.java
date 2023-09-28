@@ -107,13 +107,31 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public ResponseEntity<Object> addImageToArticle(long articleId, @NotNull MultipartFile image) {
-        return null;
+    public ResponseEntity<Object> addImageToArticle(long articleId, @NotNull MultipartFile image) throws IOException {
+        final Article existingArticle =  getArticleById(articleId);
+        final FileData newImage = fileService.processUploadedFile(image);
+        newImage.setArticle(existingArticle);
+
+        final String successResponse ="The image is added successfully.";
+        return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Object> removeImageFromArticle(long articleId, long imageId) {
-        return null;
+    public ResponseEntity<Object> removeImageFromArticle(long articleId, long imageId) throws IOException {
+        final Article exisitingArticle = getArticleById(articleId);
+        final FileData existingImage = fileService.getFileDataById(imageId);
+
+        if(!exisitingArticle.getFiles().contains(existingImage))
+        {
+            throw new IllegalStateException(String.format("The Image with ID : %d  does not belong to this article", imageId));
+        }
+
+        exisitingArticle.getFiles().remove(existingImage);
+        existingImage.setArticle(null);
+        fileService.deleteFileFromFileSystem(existingImage);
+
+        final String successResponse = String.format("The image with ID : %d deleted successfully",imageId);
+        return ResponseHandler.generateResponse(successResponse , HttpStatus.OK);
     }
     @Override
     public  ResponseEntity<byte[]> fetchImageFromArticle(final long articleId,final int fileIndex) throws IOException {

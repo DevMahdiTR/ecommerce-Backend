@@ -17,8 +17,8 @@ public interface ArticleService {
     public ResponseEntity<Object> fetchArticleById(final long articleId);
     public ResponseEntity<Object> updateArticleById(final long articleId, List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException;
     public ResponseEntity<Object> deleteArticleById(final long articleId) throws IOException;
-    public ResponseEntity<Object> addImageToArticle(final long articleId , @NotNull final MultipartFile image);
-    public ResponseEntity<Object> removeImageFromArticle(final long articleId , final long imageId);
+    public ResponseEntity<Object> addImageToArticle(final long articleId , @NotNull final MultipartFile image) throws IOException;
+    public ResponseEntity<Object> removeImageFromArticle(final long articleId , final long imageId) throws IOException;
     public ResponseEntity<byte[]>  fetchImageFromArticle(final long articleId, final int fileIndex) throws IOException;
     public ResponseEntity<Object> fetchAllArticle(final long pageNumber);
     public void deleteAllArticles (final List<Article> articles);
