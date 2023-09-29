@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/v1/categories/**").permitAll()
+                .requestMatchers("/api/v1/categories/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/v1/subcategories/**").permitAll()
                 .requestMatchers("/api/v1/articles/**").permitAll()
 
