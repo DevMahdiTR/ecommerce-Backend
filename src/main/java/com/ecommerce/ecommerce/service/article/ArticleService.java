@@ -15,7 +15,7 @@ import java.util.List;
 public interface ArticleService {
 
     public ResponseEntity<Object> fetchArticleById(final long articleId);
-    public ResponseEntity<Object> updateArticleById(final long articleId, List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException;
+    public ResponseEntity<Object> updateArticleById(final long articleId, @NotNull String articleJson) throws IOException;
     public ResponseEntity<Object> deleteArticleById(final long articleId) throws IOException;
     public ResponseEntity<Object> addImageToArticle(final long articleId , @NotNull final MultipartFile image) throws IOException;
     public ResponseEntity<Object> removeImageFromArticle(final long articleId , final long imageId) throws IOException;

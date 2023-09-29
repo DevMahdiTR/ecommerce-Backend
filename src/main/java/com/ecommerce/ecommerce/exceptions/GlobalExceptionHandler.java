@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.FORBIDDEN)
+                .status(HttpStatus.FORBIDDEN.value())
                 .message("Token has expired.")
                 .errors(details)
                 .build();
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.value())
                 .message("Invalid token")
                 .errors(details)
                 .build();
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.value())
                 .message("Invalid token")
                 .errors(details)
                 .build();
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.value())
                 .message("Resource not found.")
                 .errors(details)
                 .build();
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.UNAUTHORIZED.value())
                 .message("The requested action is unauthorized. Access denied.")
                 .errors(details)
                 .build();
@@ -105,7 +105,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.value())
                 .message("Validation failed.")
                 .errors(details)
                 .build();
@@ -118,7 +118,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.value())
                 .message("Other exception occurs")
                 .errors(details)
                 .build();
@@ -131,7 +131,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.UNAUTHORIZED.value())
                 .message("User account disabled.")
                 .errors(details)
                 .build();
@@ -151,7 +151,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.value())
                 .message("Malformed JSON found.")
                 .errors(details)
                 .build();
@@ -166,7 +166,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.value())
                 .message("Unsupported Media Type")
                 .errors(details)
                 .build();
@@ -180,7 +180,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.value())
                 .message("Method not supported")
                 .errors(details)
                 .build();
@@ -196,7 +196,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.value())
                 .message("Validation Errors")
                 .errors(details)
                 .build();
@@ -209,7 +209,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.value())
                 .message("Method not supported")
                 .errors(details)
                 .build();

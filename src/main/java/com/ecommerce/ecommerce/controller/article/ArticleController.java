@@ -25,10 +25,9 @@ public class ArticleController {
     @PutMapping("/{articleId}")
     public  ResponseEntity<Object> updateArticleById(
             @PathVariable("articleId") final long articleId,
-            @RequestParam(value = "images", required = false) List<MultipartFile> multipartFiles,
             @RequestParam(value = "articleJson", required = true) final String articleJson
     ) throws IOException {
-        return articleService.updateArticleById(articleId, multipartFiles , articleJson);
+        return articleService.updateArticleById(articleId , articleJson);
     }
     @PutMapping("/{articleId}/images")
     public ResponseEntity<Object> addImageToArticle(@PathVariable("articleId") final long articleId , @RequestParam(value = "image" , required = true) final MultipartFile multipartFile) throws IOException {

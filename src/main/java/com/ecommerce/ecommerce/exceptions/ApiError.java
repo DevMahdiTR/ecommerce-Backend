@@ -10,9 +10,8 @@ import java.util.List;
 @Data
 @Builder
 public class ApiError {
-    private HttpStatus status;
-    private boolean statusString = false;
+    private int status;
     private LocalDateTime timestamp;
     private String message;
-    private List errors;
+    private List<String> errors;
 }

@@ -9,24 +9,17 @@ import com.ecommerce.ecommerce.repository.ArticleRepository;
 import com.ecommerce.ecommerce.service.chapter.ChapterService;
 import com.ecommerce.ecommerce.service.detail.DetailService;
 import com.ecommerce.ecommerce.service.file.FileService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
-import com.ecommerce.ecommerce.utility.CustomResponseList;
 import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,11 +48,13 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public ResponseEntity<Object> updateArticleById(final long articleId, List<MultipartFile> multipartFiles, @NotNull String articleJson) throws IOException {
+    public ResponseEntity<Object> updateArticleById(final long articleId, @NotNull String articleJson) throws IOException {
 
         final Article existingArticle  = getArticleById(articleId);
         final Article updatedArticle = new ObjectMapper().readValue(articleJson , Article.class);
-        final List<FileData> prevImages = existingArticle.getFiles();
+
+        var updatedChapters = updatedArticle.getChapters();
+        var updatedDetails = updatedArticle.getDetails();
 
         existingArticle.setTitle(updatedArticle.getTitle());
         existingArticle.setPrice(updatedArticle.getPrice());
@@ -67,24 +62,21 @@ public class ArticleServiceImpl implements ArticleService{
         existingArticle.setReference(updatedArticle.getReference());
         existingArticle.setLayoutDescription(updatedArticle.getLayoutDescription());
 
-        existingArticle.getChapters().clear();
-        existingArticle.getChapters().addAll(updatedArticle.getChapters());
-        existingArticle.getDetails().clear();
-        existingArticle.getDetails().addAll(updatedArticle.getDetails());
+        chapterService.deleteAllChapters(existingArticle.getChapters());
+        detailService.deleteAllDetails(existingArticle.getDetails());
 
-        if(multipartFiles != null && !multipartFiles.isEmpty())
+        for(var updatedChapter : updatedChapters)
         {
-            existingArticle.getFiles().clear();
-            fileService.deleteAllFiles(prevImages);
-            List<FileData> newImages = new ArrayList<>();
-            for(MultipartFile multipartFile : multipartFiles)
-            {
-                FileData image = fileService.processUploadedFile(multipartFile);
-                image.setArticle(existingArticle);
-                newImages.add(image);
-            }
-            existingArticle.getFiles().addAll(newImages);
+            updatedChapter.setArticle(existingArticle);
         }
+        existingArticle.setChapters(updatedChapters);
+        for(var updatedDetail : updatedDetails)
+        {
+            updatedDetail.setArticle(existingArticle);
+        }
+        existingArticle.setDetails(updatedDetails);
+
+
 
         articleRepository.save(existingArticle);
 
