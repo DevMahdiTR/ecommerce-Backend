@@ -4,7 +4,6 @@ import com.ecommerce.ecommerce.dto.category.CategoryDTO;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
 import com.ecommerce.ecommerce.model.category.Category;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

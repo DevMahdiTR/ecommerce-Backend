@@ -4,7 +4,6 @@ import com.ecommerce.ecommerce.dto.article.ArticleDTO;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.service.subcategory.SubCategoryService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;

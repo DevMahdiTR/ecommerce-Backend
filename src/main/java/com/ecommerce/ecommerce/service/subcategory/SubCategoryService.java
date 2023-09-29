@@ -1,10 +1,7 @@
 package com.ecommerce.ecommerce.service.subcategory;
 
-import com.ecommerce.ecommerce.dto.article.ArticleDTO;
 import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
-import com.ecommerce.ecommerce.model.article.Article;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;

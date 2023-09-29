@@ -6,8 +6,7 @@ import com.ecommerce.ecommerce.dto.user.UserEntityDTOMapper;
 import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.ecommerce.model.user.UserEntity;
 import com.ecommerce.ecommerce.repository.UserEntityRepository;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
-import com.ecommerce.ecommerce.utility.CustomResponseList;
+import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,16 +30,16 @@ public class UserEntityServiceImpl implements UserEntityService {
     }
 
     @Override
-    public CustomResponseEntity<UserEntityDTO> fetchUserById(final UUID userId) {
+    public  ResponseEntity<Object> fetchUserById(final UUID userId) {
         final UserEntity user = getUserEntityById(userId);
-
         final UserEntityDTO userEntityDto = userEntityDTOMapper.apply(user);
-        return new CustomResponseEntity<>(HttpStatus.OK,userEntityDto);
+
+        return ResponseHandler.generateResponse(userEntityDto , HttpStatus.OK);
     }
 
 
     @Override
-    public CustomResponseList<UserEntityDTO> fetchAllUsers(final long pageNumber)
+    public  ResponseEntity<Object> fetchAllUsers(final long pageNumber)
     {
         final Pageable pageable = PageRequest.of((int) pageNumber - 1, 10);
 
@@ -52,34 +51,28 @@ public class UserEntityServiceImpl implements UserEntityService {
             return fetchAllUsers(1);
         }
 
+        return ResponseHandler.generateResponse(userEntityFullDTOList,HttpStatus.OK,userEntityFullDTOList.size(),userEntityRepository.getTotalUserEntityCount());
 
-        return new CustomResponseList<>(
-                HttpStatus.OK,
-                userEntityFullDTOList,
-                userEntityFullDTOList.size(),
-                userEntityRepository.getTotalUserEntityCount()
-        );
     }
     @Override
-    public CustomResponseEntity<UserEntityDTO> fetchCurrentUser(@NotNull final UserDetails userDetails)
+    public ResponseEntity<Object> fetchCurrentUser(@NotNull final UserDetails userDetails)
     {
         final UserEntity currentUser = getUserEntityByEmail(userDetails.getUsername());
         final UserEntityDTO currentUserDto = userEntityDTOMapper.apply(currentUser);
-        return  new CustomResponseEntity<>(HttpStatus.OK,currentUserDto);
+
+        return ResponseHandler.generateResponse(currentUserDto , HttpStatus.OK);
 
     }
 
     @Override
-    public CustomResponseEntity<String> enableOrDisableUser(@NotNull final UUID userId , final boolean enabled)
+    public  ResponseEntity<Object> enableOrDisableUser(@NotNull final UUID userId , final boolean enabled)
     {
         UserEntity currentUser = getUserEntityById(userId);
         currentUser.setEnabled(enabled);
         userEntityRepository.save(currentUser);
         final String successResponse = String.format("The user with email : %s  enabled = %s", currentUser.getEmail(),enabled? "true" :"false");
-        return new CustomResponseEntity<>(
-                HttpStatus.OK,
-                successResponse
-        );
+
+        return ResponseHandler.generateResponse(successResponse, HttpStatus.OK);
     }
     @Override
     public void enableUserById(final UUID userId)

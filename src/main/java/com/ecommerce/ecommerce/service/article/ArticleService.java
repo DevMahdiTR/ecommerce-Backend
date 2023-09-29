@@ -2,9 +2,6 @@ package com.ecommerce.ecommerce.service.article;
 
 import com.ecommerce.ecommerce.dto.article.ArticleDTO;
 import com.ecommerce.ecommerce.model.article.Article;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
-import com.ecommerce.ecommerce.utility.CustomResponseList;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;

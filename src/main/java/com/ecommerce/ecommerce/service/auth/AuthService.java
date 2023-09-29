@@ -2,7 +2,6 @@ package com.ecommerce.ecommerce.service.auth;
 
 
 import com.ecommerce.ecommerce.dto.auth.*;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 

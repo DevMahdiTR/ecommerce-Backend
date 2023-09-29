@@ -10,7 +10,6 @@ import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.SubCategoryRepository;
 import com.ecommerce.ecommerce.service.article.ArticleService;
 import com.ecommerce.ecommerce.service.file.FileService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;

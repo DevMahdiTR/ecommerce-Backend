@@ -8,7 +8,6 @@ import com.ecommerce.ecommerce.model.category.Category;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import com.ecommerce.ecommerce.service.subcategory.SubCategoryService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -105,6 +104,7 @@ public class CategoryServiceImpl implements CategoryService{
     public ResponseEntity<Object> fetchAllCategories() {
         final List<Category> currentCategories = categoryRepository.fetchAllCategory();
         final List<CategoryDTO> categories = currentCategories.stream().map(categoryDTOMapper).toList();
+
         return ResponseHandler.generateResponse(categories , HttpStatus.OK);
     }
 

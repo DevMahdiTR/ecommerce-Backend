@@ -14,7 +14,6 @@ import com.ecommerce.ecommerce.service.token.ConfirmationTokenService;
 import com.ecommerce.ecommerce.service.token.RefreshTokenService;
 import com.ecommerce.ecommerce.service.token.TokenService;
 import com.ecommerce.ecommerce.service.user.UserEntityService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import com.ecommerce.ecommerce.security.jwt.JWTService;
 import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import org.jetbrains.annotations.NotNull;

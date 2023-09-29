@@ -1,19 +1,12 @@
 package com.ecommerce.ecommerce.controller.category;
 
-
-import com.ecommerce.ecommerce.dto.category.CategoryDTO;
-import com.ecommerce.ecommerce.dto.subCategory.SubCategoryDTO;
 import com.ecommerce.ecommerce.model.category.Category;
 import com.ecommerce.ecommerce.model.subcategory.SubCategory;
 import com.ecommerce.ecommerce.service.category.CategoryService;
-import com.ecommerce.ecommerce.utility.CustomResponseEntity;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.print.DocFlavor;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/categories")
