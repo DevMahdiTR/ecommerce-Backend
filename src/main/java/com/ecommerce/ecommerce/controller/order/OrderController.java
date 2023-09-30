@@ -13,7 +13,6 @@ import java.util.UUID;
 @RequestMapping("api/v1/order")
 public class OrderController {
 
-
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
@@ -33,9 +32,8 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Object> fetchOrdersOfUser(@PathVariable("userId") final UUID userId , @RequestParam(value = "pageNumber", required = true)final long pageNumber)
-    {
-        return orderService.fetchOrdersOfUser(userId , pageNumber);
+    public ResponseEntity<Object> fetchOrdersOfUser(@PathVariable("userId") final UUID userId, @RequestParam(value = "pageNumber", required = true) final long pageNumber) {
+        return orderService.fetchOrdersOfUser(userId, pageNumber);
     }
 
     @PostMapping()
@@ -49,3 +47,5 @@ public class OrderController {
         return orderService.finishOrder(orderId);
     }
 }
+
+

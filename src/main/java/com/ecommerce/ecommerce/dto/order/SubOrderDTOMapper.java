@@ -10,7 +10,7 @@ public class SubOrderDTOMapper  implements Function<SubOrder , SubOrderDTO> {
         return new SubOrderDTO(
                 subOrder.getId(),
                 subOrder.getQuantity(),
-                subOrder.getArticle().getId(),
+                subOrder.getArticleId(),
                 subOrder.getOrder().getId()
         );
     }

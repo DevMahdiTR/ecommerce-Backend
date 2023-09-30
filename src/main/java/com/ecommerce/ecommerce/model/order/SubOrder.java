@@ -25,8 +25,8 @@ public class SubOrder {
     @Column(name = "quantity" , nullable = false)
     private int quantity;
 
-    @OneToOne
-    private Article article;
+    @Column(name = "article_id", nullable = false)
+    private long articleId;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
