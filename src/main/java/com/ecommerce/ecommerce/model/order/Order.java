@@ -28,8 +28,8 @@ public class Order {
     private long id;
 
 
-    @Column(name = "finished" , nullable = false)
-    private boolean finished = false;
+    @Column(name = "delivered" , nullable = false)
+    private boolean delivered = false;
 
     @Column(name = "address" , nullable = false)
     private String address;

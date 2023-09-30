@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record OrderDTO (
         long id,
-        boolean finished,
+        boolean delivered,
         String address,
         String paymentMethode,
         float price,

@@ -9,7 +9,7 @@ public class OrderDTOMapper implements Function<Order , OrderDTO> {
     public OrderDTO apply(Order order) {
         return new OrderDTO(
                 order.getId(),
-                order.isFinished(),
+                order.isDelivered(),
                 order.getAddress(),
                 order.getPaymentMethode(),
                 order.getPrice(),
