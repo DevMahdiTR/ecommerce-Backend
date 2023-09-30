@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jcip.annotations.NotThreadSafe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class Order {
     private String paymentMethode;
 
     @Column(name = "total_price", nullable = false)
-    private  long price;
+    private  float price;
 
     @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
     private List<SubOrder> subOrders = new ArrayList<>();
