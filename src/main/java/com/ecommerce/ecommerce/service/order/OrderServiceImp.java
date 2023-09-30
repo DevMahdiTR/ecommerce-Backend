@@ -4,8 +4,12 @@ import com.ecommerce.ecommerce.dto.order.OrderDTO;
 import com.ecommerce.ecommerce.dto.order.OrderDTOMapper;
 import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.ecommerce.model.order.Order;
+import com.ecommerce.ecommerce.model.user.UserEntity;
 import com.ecommerce.ecommerce.repository.OrderRepository;
+import com.ecommerce.ecommerce.service.user.UserEntityService;
 import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.weaver.ast.Or;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,10 +27,12 @@ public class OrderServiceImp  implements  OrderService{
 
     private final OrderRepository orderRepository;
     private final OrderDTOMapper orderDTOMapper;
+    private final UserEntityService userEntityService;
 
-    public OrderServiceImp(OrderRepository orderRepository, OrderDTOMapper orderDTOMapper) {
+    public OrderServiceImp(OrderRepository orderRepository, OrderDTOMapper orderDTOMapper, UserEntityService userEntityService) {
         this.orderRepository = orderRepository;
         this.orderDTOMapper = orderDTOMapper;
+        this.userEntityService = userEntityService;
     }
 
     @Override
@@ -56,8 +63,19 @@ public class OrderServiceImp  implements  OrderService{
     }
 
     @Override
-    public ResponseEntity<Object> placeOrder(@NotNull UserDetails userDetails, @NotNull String orderJson) {
-        return null;
+    public ResponseEntity<Object> placeOrder(@NotNull UserDetails userDetails, @NotNull String orderJson) throws JsonProcessingException {
+         final UserEntity existingUser = userEntityService.getUserEntityByEmail(userDetails.getUsername());
+         final Order order = new ObjectMapper().readValue(orderJson, Order.class);
+         for(var subOrder : order.getSubOrders())
+         {
+             subOrder.setOrder(order);
+         }
+         order.setDelivered(false);
+         order.setUser(existingUser);
+         final Order newOrder = orderRepository.save(order);
+
+         final String successResponse = String.format("The Order Placed successfully under the ID : %d",newOrder.getId());
+         return ResponseHandler.generateResponse(successResponse, HttpStatus.OK);
     }
 
     @Override
