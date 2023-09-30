@@ -47,6 +47,11 @@ public class OrderServiceImp  implements  OrderService{
     public ResponseEntity<Object> fetchAllOrders(long pageNumber) {
         final Pageable pageable  = PageRequest.of((int)pageNumber - 1, 10 );
         final List<OrderDTO> orders = orderRepository.fetchAllOrders(pageable).stream().map(orderDTOMapper).toList();
+
+        if(orders.isEmpty() && pageNumber > 1)
+        {
+            return fetchAllOrders(1);
+        }
         final long total = orderRepository.getTotalOrderCount();
 
         return ResponseHandler.generateResponse(orders,HttpStatus.OK,orders.size(),total);
@@ -57,6 +62,10 @@ public class OrderServiceImp  implements  OrderService{
     public ResponseEntity<Object> fetchOrdersOfUser(final UUID userId, final long pageNumber) {
         final Pageable pageable = PageRequest.of((int) pageNumber-1 , 10);
         final List<OrderDTO> orders = orderRepository.fetchOrdersFromUser(userId , pageable).stream().map(orderDTOMapper).toList();
+        if(orders.isEmpty() && pageNumber > 1)
+        {
+            return fetchOrdersOfUser(userId , 1);
+        }
         final long total = orderRepository.getTotalOrderCountByUser(userId);
 
         return ResponseHandler.generateResponse(orders , HttpStatus.OK,orders.size() , total);
