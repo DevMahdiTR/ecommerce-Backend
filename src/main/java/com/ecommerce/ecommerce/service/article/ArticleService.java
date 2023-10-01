@@ -21,5 +21,6 @@ public interface ArticleService {
     public void deleteAllArticles (final List<Article> articles);
     public ArticleDTO mapToDTOItem(final Article article);
     public List<ArticleDTO> mapToDTOList(List<Article> articles);
+    public Article getArticleById(final long articleId);
 
 }

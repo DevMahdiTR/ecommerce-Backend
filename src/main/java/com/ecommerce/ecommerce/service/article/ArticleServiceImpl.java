@@ -168,6 +168,7 @@ public class ArticleServiceImpl implements ArticleService{
         return articles.stream().map(articleDTOMapper).toList();
     }
 
+    @Override
     public Article getArticleById(final long articleId)
     {
         return articleRepository.fetchArticleById(articleId).orElseThrow(

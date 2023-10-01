@@ -6,6 +6,7 @@ import com.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.ecommerce.model.order.Order;
 import com.ecommerce.ecommerce.model.user.UserEntity;
 import com.ecommerce.ecommerce.repository.OrderRepository;
+import com.ecommerce.ecommerce.service.article.ArticleService;
 import com.ecommerce.ecommerce.service.user.UserEntityService;
 import com.ecommerce.ecommerce.utility.responses.ResponseHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,11 +29,13 @@ public class OrderServiceImp  implements  OrderService{
     private final OrderRepository orderRepository;
     private final OrderDTOMapper orderDTOMapper;
     private final UserEntityService userEntityService;
+    private final ArticleService articleService;
 
-    public OrderServiceImp(OrderRepository orderRepository, OrderDTOMapper orderDTOMapper, UserEntityService userEntityService) {
+    public OrderServiceImp(OrderRepository orderRepository, OrderDTOMapper orderDTOMapper, UserEntityService userEntityService, ArticleService articleService) {
         this.orderRepository = orderRepository;
         this.orderDTOMapper = orderDTOMapper;
         this.userEntityService = userEntityService;
+        this.articleService = articleService;
     }
 
     @Override
@@ -75,12 +78,15 @@ public class OrderServiceImp  implements  OrderService{
     public ResponseEntity<Object> placeOrder(@NotNull UserDetails userDetails, @NotNull String orderJson) throws JsonProcessingException {
          final UserEntity existingUser = userEntityService.getUserEntityByEmail(userDetails.getUsername());
          final Order order = new ObjectMapper().readValue(orderJson, Order.class);
+         float totalPrice  = 0f;
          for(var subOrder : order.getSubOrders())
          {
              subOrder.setOrder(order);
+             totalPrice += (articleService.getArticleById(subOrder.getArticleId()).getPrice() * subOrder.getQuantity());
          }
          order.setDelivered(false);
          order.setUser(existingUser);
+         order.setPrice(totalPrice);
          final Order newOrder = orderRepository.save(order);
 
          final String successResponse = String.format("The Order Placed successfully under the ID : %d",newOrder.getId());

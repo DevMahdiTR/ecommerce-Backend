@@ -38,7 +38,7 @@ public class Order {
     private String paymentMethode;
 
     @Column(name = "total_price", nullable = false)
-    private  float price;
+    private  float price = 0f;
 
     @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
     private List<SubOrder> subOrders = new ArrayList<>();
