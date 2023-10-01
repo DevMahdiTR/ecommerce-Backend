@@ -31,7 +31,7 @@ public class OrderController {
         return orderService.fetchAllOrders(pageNumber);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<Object> fetchOrdersOfUser(@PathVariable("userId") final UUID userId, @RequestParam(value = "pageNumber", required = true) final long pageNumber) {
         return orderService.fetchOrdersOfUser(userId, pageNumber);
     }
