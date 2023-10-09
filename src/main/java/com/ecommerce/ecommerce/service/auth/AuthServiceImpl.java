@@ -136,7 +136,7 @@ public class AuthServiceImpl  implements  AuthService{
 
         if(expiredAt.isBefore(LocalDateTime.now()))
         {
-            throw new  IllegalStateException("token expired.");
+            throw new  IllegalStateException("Confirmation token expired.");
         }
 
         confirmationTokenService.setConfirmedAt(token);
